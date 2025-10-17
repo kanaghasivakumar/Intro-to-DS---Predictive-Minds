@@ -1,37 +1,83 @@
-# Python
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
+*.py[cod]
+*$py.class
 
-# Virtual Environment
+# Virtual environments
 airbnb-env/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
 
-# Interactive files (ignore)
+# Interactive HTML files
 *.html
 
-# IDE
+# Large data files - EXCLUDE THESE
+*.csv
+*.xlsx
+*.pkl
+*.pickle
+*.feather
+*.h5
+*.hdf5
+
+# Generated output files
+*.png
+*.pdf
+visualizations/
+airbnb_visualizations/
+
+# IDE files
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# OS
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 
-# Jupyter
+# Jupyter Notebook
 .ipynb_checkpoints
-
-# Keep these files (comment these out if you want to ignore them too)
-# !*.csv
-# !*.png
-# !*.pdf
 
 # Logs
 *.log
 
 # Environment variables
 .env
+.env.local
+.env.production
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
