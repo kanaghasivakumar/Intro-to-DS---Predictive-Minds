@@ -24,5 +24,6 @@ Comprehensive analysis of Los Angeles Airbnb listings using Principal Component 
 ## Usage
 
 1. Run the full pipeline:
-   ```bash
    python main.py
+2. Generate visualizations:
+   python run_visualizations.py
