@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Virtual Environment
+airbnb-env/
+
+# Interactive files (ignore)
+*.html
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints
+
+# Keep these files (comment these out if you want to ignore them too)
+# !*.csv
+# !*.png
+# !*.pdf
+
+# Logs
+*.log
+
+# Environment variables
+.env
