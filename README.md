@@ -109,23 +109,40 @@ Meaning: Hollywood has more shared room listings
 These components capture very specific geographic patterns:
 
 PC11: Long Beach vs Downtown vs Venice dynamics
+
 PC12: Downtown vs Pasadena contrast
+
 PC13: Beverly Hills vs Alhambra differences
+
 PC14: Santa Monica dominance
+
 PC15: Hollywood Hills uniqueness
+
 PC16: Pasadena-Santa Monica relationship
+
 PC17: Alhambra-West Hollywood opposition
+
 PC18: Shared rooms in specific areas
+
 PC19: More geographic fine-tuning
 
 ⚙️ PC20-29 (21.88% variance) - "Technical & Minor Effects"
 PC20 (2.21%): Host verification + stay duration patterns
+
 PC21 (2.12%): Instant booking + price relationships
+
 PC22 (2.05%): Minimum nights + superhost correlation
+
 PC23 (1.99%): Maximum vs minimum nights dynamics
+
 PC24 (1.78%): Pure price effects
+
 PC25 (1.60%): Host experience patterns
+
 PC26 (1.41%): Amenities vs superhost tradeoff
+
 PC27 (1.17%): Long-term availability (365 days)
+
 PC28 (0.95%): Location rating specificity
+
 PC29 (0.90%): Check-in vs cleanliness rating balance
