@@ -106,6 +106,7 @@ High: neighborhood_Hollywood, room_type_Shared room
 Meaning: Hollywood has more shared room listings
 
 🗺️ PC11-19 (27.53% variance) - "Neighborhood Micro-Patterns"
+
 These components capture very specific geographic patterns:
 
 PC11: Long Beach vs Downtown vs Venice dynamics
@@ -127,6 +128,7 @@ PC18: Shared rooms in specific areas
 PC19: More geographic fine-tuning
 
 ⚙️ PC20-29 (21.88% variance) - "Technical & Minor Effects"
+
 PC20 (2.21%): Host verification + stay duration patterns
 
 PC21 (2.12%): Instant booking + price relationships
