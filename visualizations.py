@@ -24,7 +24,7 @@ class AirbnbVisualizer:
         
     def create_pca_summary_plots(self):
         """Create comprehensive PCA summary visualizations"""
-        print("📊 Creating PCA Summary Plots...")
+        print("Creating PCA Summary Plots...")
         
         fig, axes = plt.subplots(2, 2, figsize=(20, 16))
         
@@ -85,7 +85,7 @@ class AirbnbVisualizer:
         
     def create_pca_scatter_plots(self):
         """Create insightful scatter plots using PCA components"""
-        print("📈 Creating PCA Scatter Plots...")
+        print("Creating PCA Scatter Plots...")
         
         fig, axes = plt.subplots(2, 2, figsize=(20, 16))
         
@@ -149,7 +149,7 @@ class AirbnbVisualizer:
         
     def create_component_heatmap(self, n_components=10):
         """Create heatmap of component loadings"""
-        print("🔥 Creating Component Loading Heatmap...")
+        print("Creating Component Loading Heatmap...")
         
         # Get top components
         top_components = self.components_df.iloc[:n_components]
@@ -177,7 +177,7 @@ class AirbnbVisualizer:
         
     def create_neighborhood_analysis(self):
         """Analyze neighborhood patterns in PCA space"""
-        print("🏙️ Creating Neighborhood Analysis...")
+        print("Creating Neighborhood Analysis...")
         
         # Get top neighborhoods
         top_neighborhoods = self.df['neighbourhood_cleansed'].value_counts().head(8).index
@@ -233,7 +233,7 @@ class AirbnbVisualizer:
         
     def create_price_analysis(self):
         """Analyze price relationships with PCA components"""
-        print("💰 Creating Price Analysis...")
+        print("Creating Price Analysis...")
         
         fig, axes = plt.subplots(2, 2, figsize=(20, 16))
         
@@ -285,7 +285,7 @@ class AirbnbVisualizer:
     def create_interactive_3d_plot(self):
         """Create interactive 3D plot (if plotly is available)"""
         try:
-            print("🔄 Creating Interactive 3D Plot...")
+            print("Creating Interactive 3D Plot...")
             
             fig = px.scatter_3d(
                 self.df.head(2000),  # Sample for performance
@@ -304,14 +304,14 @@ class AirbnbVisualizer:
             )
             
             fig.write_html("pca_3d_interactive.html")
-            print("✅ Interactive 3D plot saved as 'pca_3d_interactive.html'")
+            print("Interactive 3D plot saved as 'pca_3d_interactive.html'")
             
         except ImportError:
-            print("⚠️  Plotly not available for interactive 3D plots")
+            print("Plotly not available for interactive 3D plots")
             
     def run_all_visualizations(self):
         """Run all visualization methods"""
-        print("🎨 Generating All Visualizations...\n")
+        print("Generating All Visualizations...\n")
         
         self.create_pca_summary_plots()
         self.create_pca_scatter_plots() 
@@ -320,8 +320,8 @@ class AirbnbVisualizer:
         self.create_price_analysis()
         self.create_interactive_3d_plot()
         
-        print("\n✅ All visualizations completed!")
-        print("📁 Files created:")
+        print("\nAll visualizations completed!")
+        print("Files created:")
         print("   - pca_summary_plots.png")
         print("   - pca_scatter_plots.png") 
         print("   - pca_component_heatmap.png")
