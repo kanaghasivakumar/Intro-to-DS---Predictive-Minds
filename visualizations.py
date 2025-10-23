@@ -10,7 +10,6 @@ from plotly.subplots import make_subplots
 import warnings
 warnings.filterwarnings('ignore')
 
-# Set style
 plt.style.use('default')
 sns.set_palette("husl")
 
@@ -23,12 +22,10 @@ class AirbnbVisualizer:
         self.pc_columns = [col for col in self.df.columns if col.startswith('PC')]
         
     def create_pca_summary_plots(self):
-        """Create comprehensive PCA summary visualizations"""
-        print("Creating PCA Summary Plots...")
+        print("Creating PCA Summary Plots")
         
         fig, axes = plt.subplots(2, 2, figsize=(20, 16))
         
-        # 1. Scree Plot
         components_range = range(1, len(self.explained_variance) + 1)
         axes[0,0].plot(components_range, self.explained_variance, 'bo-', linewidth=2, markersize=6, label='Individual')
         axes[0,0].plot(components_range, self.cumulative_variance, 'ro-', linewidth=2, markersize=6, label='Cumulative')
@@ -39,7 +36,6 @@ class AirbnbVisualizer:
         axes[0,0].grid(True, alpha=0.3)
         axes[0,0].axhline(y=0.95, color='g', linestyle='--', alpha=0.7, label='95% Variance')
         
-        # 2. Cumulative Variance Bar Plot
         explained_95 = np.argmax(self.cumulative_variance >= 0.95) + 1
         colors = ['skyblue' if i < explained_95 else 'lightgray' for i in components_range]
         axes[0,1].bar(components_range, self.cumulative_variance, color=colors, alpha=0.8)
@@ -50,7 +46,6 @@ class AirbnbVisualizer:
         axes[0,1].legend()
         axes[0,1].grid(True, alpha=0.3)
         
-        # 3. Top 10 Components Variance
         top_10_variance = self.explained_variance[:10]
         colors_10 = plt.cm.viridis(np.linspace(0, 1, 10))
         bars = axes[1,0].bar(range(1, 11), top_10_variance, color=colors_10, alpha=0.8)
@@ -58,12 +53,10 @@ class AirbnbVisualizer:
         axes[1,0].set_ylabel('Variance Explained')
         axes[1,0].set_title('Top 10 Principal Components - Individual Variance', fontsize=14, fontweight='bold')
         
-        # Add value labels on bars
         for bar, value in zip(bars, top_10_variance):
             axes[1,0].text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.005, 
                           f'{value:.3f}', ha='center', va='bottom', fontweight='bold')
         
-        # 4. Feature Importance in PC1
         pc1_loadings = self.components_df.iloc[0].sort_values(ascending=False)
         top_10_pc1 = pd.concat([pc1_loadings.head(5), pc1_loadings.tail(5)])
         
@@ -74,7 +67,6 @@ class AirbnbVisualizer:
         axes[1,1].set_xlabel('Loading Value')
         axes[1,1].set_title('Top 10 Feature Loadings - PC1 (Review Quality)', fontsize=14, fontweight='bold')
         
-        # Add value labels
         for i, (bar, value) in enumerate(zip(bars_pc1, top_10_pc1.values)):
             axes[1,1].text(value + (0.01 if value > 0 else -0.03), i, f'{value:.3f}', 
                           va='center', fontweight='bold', color='black' if abs(value) > 0.1 else 'gray')
@@ -84,12 +76,10 @@ class AirbnbVisualizer:
         plt.show()
         
     def create_pca_scatter_plots(self):
-        """Create insightful scatter plots using PCA components"""
-        print("Creating PCA Scatter Plots...")
+        print("Creating PCA Scatter Plots")
         
         fig, axes = plt.subplots(2, 2, figsize=(20, 16))
         
-        # 1. PC1 vs PC2 colored by room type
         room_types = self.df['room_type'].value_counts().index
         colors_room = sns.color_palette("Set2", len(room_types))
         
@@ -104,7 +94,6 @@ class AirbnbVisualizer:
         axes[0,0].legend()
         axes[0,0].grid(True, alpha=0.3)
         
-        # 2. PC1 vs PC3 colored by price quartile
         price_q = pd.qcut(self.df['price'], 4, labels=['Low', 'Medium-Low', 'Medium-High', 'High'])
         colors_price = ['green', 'yellow', 'orange', 'red']
         
@@ -119,7 +108,6 @@ class AirbnbVisualizer:
         axes[0,1].legend()
         axes[0,1].grid(True, alpha=0.3)
         
-        # 3. PC2 vs PC4 colored by superhost status
         for superhost in [0, 1]:
             mask = self.df['host_is_superhost'] == superhost
             label = 'Superhost' if superhost == 1 else 'Regular Host'
@@ -133,7 +121,6 @@ class AirbnbVisualizer:
         axes[1,0].legend()
         axes[1,0].grid(True, alpha=0.3)
         
-        # 4. PC1 vs Price (to see relationship)
         scatter = axes[1,1].scatter(self.df['PC1'], self.df['price'], 
                                    c=self.df['review_scores_rating'], 
                                    cmap='viridis', alpha=0.6, s=30)
@@ -148,19 +135,15 @@ class AirbnbVisualizer:
         plt.show()
         
     def create_component_heatmap(self, n_components=10):
-        """Create heatmap of component loadings"""
-        print("Creating Component Loading Heatmap...")
+        print("Creating Component Loading Heatmap")
         
-        # Get top components
         top_components = self.components_df.iloc[:n_components]
         
-        # Select top features for each component
         top_features = set()
         for i in range(n_components):
             component_loadings = top_components.iloc[i].abs().sort_values(ascending=False)
             top_features.update(component_loadings.head(6).index)
         
-        # Filter components_df to only include top features
         heatmap_data = top_components[list(top_features)]
         
         plt.figure(figsize=(16, 10))
@@ -176,15 +159,12 @@ class AirbnbVisualizer:
         plt.show()
         
     def create_neighborhood_analysis(self):
-        """Analyze neighborhood patterns in PCA space"""
-        print("Creating Neighborhood Analysis...")
+        print("Creating Neighborhood Analysis")
         
-        # Get top neighborhoods
         top_neighborhoods = self.df['neighbourhood_cleansed'].value_counts().head(8).index
         
         fig, axes = plt.subplots(2, 2, figsize=(20, 16))
         
-        # 1. Neighborhood distribution in PC1-PC2 space
         for neighborhood in top_neighborhoods:
             mask = self.df['neighbourhood_cleansed'] == neighborhood
             axes[0,0].scatter(self.df.loc[mask, 'PC1'], self.df.loc[mask, 'PC2'], 
@@ -196,7 +176,6 @@ class AirbnbVisualizer:
         axes[0,0].legend(bbox_to_anchor=(1.05, 1), loc='upper left')
         axes[0,0].grid(True, alpha=0.3)
         
-        # 2. Average PC values by neighborhood
         neighborhood_pc_means = self.df.groupby('neighbourhood_cleansed')[['PC1', 'PC2', 'PC3', 'PC4']].mean()
         neighborhood_pc_means = neighborhood_pc_means.loc[top_neighborhoods]
         
@@ -207,8 +186,7 @@ class AirbnbVisualizer:
         axes[0,1].grid(True, alpha=0.3)
         axes[0,1].legend(bbox_to_anchor=(1.05, 1), loc='upper left')
         
-        # 3. Price vs PC1 by neighborhood
-        for neighborhood in top_neighborhoods[:4]:  # Top 4 only for clarity
+        for neighborhood in top_neighborhoods[:4]:
             mask = self.df['neighbourhood_cleansed'] == neighborhood
             axes[1,0].scatter(self.df.loc[mask, 'PC1'], self.df.loc[mask, 'price'], 
                              alpha=0.6, label=neighborhood, s=40)
@@ -219,7 +197,6 @@ class AirbnbVisualizer:
         axes[1,0].legend()
         axes[1,0].grid(True, alpha=0.3)
         
-        # 4. Superhost ratio by neighborhood
         superhost_ratio = self.df.groupby('neighbourhood_cleansed')['host_is_superhost'].mean().sort_values(ascending=False).head(10)
         superhost_ratio.plot(kind='bar', ax=axes[1,1], color='gold', alpha=0.7)
         axes[1,1].set_title('Superhost Ratio by Neighborhood (Top 10)', fontsize=14, fontweight='bold')
@@ -232,18 +209,15 @@ class AirbnbVisualizer:
         plt.show()
         
     def create_price_analysis(self):
-        """Analyze price relationships with PCA components"""
-        print("Creating Price Analysis...")
+        print("Creating Price Analysis")
         
         fig, axes = plt.subplots(2, 2, figsize=(20, 16))
         
-        # 1. Price distribution by room type
         self.df.boxplot(column='price', by='room_type', ax=axes[0,0])
         axes[0,0].set_title('Price Distribution by Room Type', fontsize=14, fontweight='bold')
         axes[0,0].set_ylabel('Price ($)')
         axes[0,0].tick_params(axis='x', rotation=45)
         
-        # 2. Correlation between top PCs and price
         top_pcs = self.pc_columns[:8]
         price_correlations = [self.df[pc].corr(self.df['price']) for pc in top_pcs]
         
@@ -254,12 +228,10 @@ class AirbnbVisualizer:
         axes[0,1].set_ylabel('Correlation Coefficient')
         axes[0,1].tick_params(axis='x', rotation=45)
         
-        # Add value labels
         for bar, value in zip(bars, price_correlations):
             axes[0,1].text(bar.get_x() + bar.get_width()/2, bar.get_height() + (0.01 if value > 0 else -0.02), 
                           f'{value:.3f}', ha='center', va='bottom' if value > 0 else 'top', fontweight='bold')
         
-        # 3. PC2 vs Price (Property Size vs Price)
         scatter = axes[1,0].scatter(self.df['PC2'], self.df['price'], 
                                    c=self.df['accommodates'], cmap='plasma', alpha=0.6, s=30)
         axes[1,0].set_xlabel('PC2 - Property Size')
@@ -268,9 +240,8 @@ class AirbnbVisualizer:
         plt.colorbar(scatter, ax=axes[1,0], label='Accommodates')
         axes[1,0].grid(True, alpha=0.3)
         
-        # 4. Price vs number of reviews (bubble chart by PC1)
         scatter = axes[1,1].scatter(self.df['number_of_reviews'], self.df['price'], 
-                                   s=self.df['PC1'].abs() * 50,  # Size by review quality magnitude
+                                   s=self.df['PC1'].abs() * 50,  
                                    c=self.df['review_scores_rating'], cmap='viridis', alpha=0.6)
         axes[1,1].set_xlabel('Number of Reviews')
         axes[1,1].set_ylabel('Price ($)')
@@ -283,12 +254,11 @@ class AirbnbVisualizer:
         plt.show()
         
     def create_interactive_3d_plot(self):
-        """Create interactive 3D plot (if plotly is available)"""
         try:
-            print("Creating Interactive 3D Plot...")
+            print("Creating Interactive 3D Plot")
             
             fig = px.scatter_3d(
-                self.df.head(2000),  # Sample for performance
+                self.df.head(2000), 
                 x='PC1',
                 y='PC2', 
                 z='PC3',
@@ -310,8 +280,7 @@ class AirbnbVisualizer:
             print("Plotly not available for interactive 3D plots")
             
     def run_all_visualizations(self):
-        """Run all visualization methods"""
-        print("Generating All Visualizations...\n")
+        print("Generating All Visualizations\n")
         
         self.create_pca_summary_plots()
         self.create_pca_scatter_plots() 

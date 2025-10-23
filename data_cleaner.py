@@ -6,8 +6,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 def clean_data(df):
-    """Step 1: Clean the raw data"""
-    print("Cleaning data...")
+    print("Cleaning data")
     df_clean = df.copy()
     
     for col in PRICE_COLUMNS:
@@ -32,8 +31,7 @@ def clean_data(df):
     return df_clean
 
 def handle_missing_values(df):
-    """Step 2: Handle missing values - FIXED VERSION"""
-    print("Handling missing values...")
+    print("Handling missing values")
     df_filled = df.copy()
     
     numeric_columns = df_filled.select_dtypes(include=[np.number]).columns.tolist()
@@ -56,7 +54,7 @@ def handle_missing_values(df):
     
     if completely_empty_numeric:
         df_filled = df_filled.drop(columns=completely_empty_numeric)
-        print(f"   Dropped {len(completely_empty_numeric)} completely empty numeric columns: {completely_empty_numeric}")
+        print(f"Dropped {len(completely_empty_numeric)} completely empty numeric columns: {completely_empty_numeric}")
     
     categorical_cols_filled = 0
     for col in categorical_columns:
@@ -70,11 +68,11 @@ def handle_missing_values(df):
                 df_filled[col] = df_filled[col].fillna('Unknown')
             categorical_cols_filled += 1
     
-    print(f"   Filled {categorical_cols_filled} categorical columns")
+    print(f"Filled {categorical_cols_filled} categorical columns")
     
     remaining_missing = df_filled.isnull().sum().sum()
     if remaining_missing > 0:
-        print(f"{remaining_missing} missing values remain - these will be handled later")
+        print(f"    {remaining_missing} missing values remain - these will be handled later")
     
-    print("Missing values handled!")
+    print("Missing values handled")
     return df_filled

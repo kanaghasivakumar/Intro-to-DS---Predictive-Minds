@@ -2,8 +2,7 @@ import pandas as pd
 from config import BINARY_FEATURES
 
 def engineer_features(df):
-    """Step 3: Create new features"""
-    print("Engineering features...")
+    print("Engineering features")
     df_fe = df.copy()
     
     for feature in BINARY_FEATURES:
@@ -22,16 +21,14 @@ def engineer_features(df):
         neighborhood_dummies = pd.get_dummies(df_fe['neighbourhood_group'], prefix='neighborhood')
         df_fe = pd.concat([df_fe, neighborhood_dummies], axis=1)
     
-    # Price per bedroom
     if all(col in df_fe.columns for col in ['price', 'bedrooms']):
         df_fe['price_per_bedroom'] = df_fe['price'] / df_fe['bedrooms'].replace(0, 1)
     
-    print("Feature engineering completed!")
+    print("Feature engineering completed")
     return df_fe
 
 def select_pca_features(df):
-    """Select features for PCA analysis"""
-    print("Selecting features for PCA...")
+    print("Selecting features for PCA")
     
     pca_features = [
         'price', 'accommodates', 'bathrooms', 'bedrooms', 'beds',

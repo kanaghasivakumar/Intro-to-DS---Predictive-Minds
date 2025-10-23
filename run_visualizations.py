@@ -4,25 +4,23 @@ from visualizations import AirbnbVisualizer
 import numpy as np
 
 def load_processed_data():
-    """Load the processed data from the PCA pipeline"""
     try:
         cleaned_df = pd.read_csv('la_airbnb_processed_with_pca.csv')
         
         pca_components = pd.read_csv('la_airbnb_pca_components.csv')
         
-        print("✅ Processed data loaded successfully!")
+        print("Processed data loaded successfully!")
         print(f"Dataset shape: {cleaned_df.shape}")
         
         return cleaned_df, pca_components
         
     except FileNotFoundError:
-        print(" Processed data files not found!")
-        print(" Please run main.py first to generate the PCA results")
+        print("Processed data files not found!")
+        print("Please run main.py first to generate the PCA results")
         return None, None
 
 def main():
-    """Main function to run all visualizations"""
-    print(" LA Airbnb Data Visualization Dashboard")
+    print("LA Airbnb Data Visualization Dashboard")
     print("=" * 50)
     
     cleaned_df, pca_components = load_processed_data()

@@ -1,7 +1,8 @@
 DATA_PATH = r'C:\NU MSAI Fall 2025\Intro to DS Dataset\listings.csv'
 OUTPUT_PATH = 'la_airbnb_processed_with_pca.csv'
 PCA_COMPONENTS_PATH = 'la_airbnb_pca_components.csv'
-
+OUTPUT_PATH2 = 'la_airbnb_cleaned.csv'
+OUTPUT_PATH3 = 'la_airbnb_cleaned_and_missing_values_handled.csv'
 N_COMPONENTS = None 
 
 PRICE_COLUMNS = ['price', 'weekly_price', 'monthly_price', 'security_deposit', 'cleaning_fee', 'extra_people']

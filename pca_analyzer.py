@@ -6,46 +6,43 @@ from sklearn.decomposition import PCA
 from config import N_COMPONENTS
 
 def clean_numeric_data(data):
-    """Ensure all data is numeric by converting or dropping problematic columns"""
-    print("Ensuring all PCA data is numeric...")
+    print("Ensuring all PCA data is numeric")
     data_clean = data.copy()
     
     problematic_columns = []
     
     for col in data_clean.columns:
         if data_clean[col].dtype == 'object':
-            print(f"   Converting column '{col}' to numeric...")
+            print(f"Converting column '{col}' to numeric")
             try:
                 data_clean[col] = pd.to_numeric(data_clean[col], errors='coerce')
                 
                 if data_clean[col].isnull().mean() > 0.5:
                     problematic_columns.append(col)
-                    print(f"     Column '{col}' has too many non-numeric values - will be dropped")
+                    print(f"Column '{col}' has too many non-numeric values - will be dropped")
                 else:
-                    # Fill remaining NaN with median
                     median_val = data_clean[col].median()
                     data_clean[col] = data_clean[col].fillna(median_val)
-                    print(f"    Column '{col}' converted successfully")
+                    print(f"Column '{col}' converted successfully")
                     
             except Exception as e:
                 problematic_columns.append(col)
-                print(f"    Column '{col}' failed conversion: {e}")
+                print(f"Column '{col}' failed conversion: {e}")
     
     if problematic_columns:
-        print(f"   Dropping {len(problematic_columns)} problematic columns: {problematic_columns}")
+        print(f"Dropping {len(problematic_columns)} problematic columns: {problematic_columns}")
         data_clean = data_clean.drop(columns=problematic_columns)
     
     non_numeric_cols = data_clean.select_dtypes(include=['object']).columns
     if len(non_numeric_cols) > 0:
-        print(f"     Still found non-numeric columns: {list(non_numeric_cols)} - dropping them")
+        print(f"Still found non-numeric columns: {list(non_numeric_cols)} - dropping them")
         data_clean = data_clean.drop(columns=non_numeric_cols)
     
-    print(f" Final PCA data shape: {data_clean.shape}")
+    print(f"Final PCA data shape: {data_clean.shape}")
     return data_clean
 
 def perform_pca(data, n_components=N_COMPONENTS):
-    """Step 4: Perform PCA analysis"""
-    print(" Performing PCA...")
+    print(" Performing PCA")
     
     data_clean = clean_numeric_data(data)
     
@@ -61,7 +58,7 @@ def perform_pca(data, n_components=N_COMPONENTS):
         explained_variance = pca_full.explained_variance_ratio_
         cumulative_variance = np.cumsum(explained_variance)
         n_components = np.argmax(cumulative_variance >= 0.95) + 1
-        print(f" Selected {n_components} components explaining {cumulative_variance[n_components-1]:.2%} of variance")
+        print(f"Selected {n_components} components explaining {cumulative_variance[n_components-1]:.2%} of variance")
     
     pca = PCA(n_components=n_components)
     principal_components = pca.fit_transform(data_scaled)
@@ -69,12 +66,11 @@ def perform_pca(data, n_components=N_COMPONENTS):
     pc_columns = [f'PC{i+1}' for i in range(n_components)]
     pca_df = pd.DataFrame(principal_components, columns=pc_columns, index=data_clean.index)
     
-    print(" PCA completed!")
+    print("PCA completed")
     return pca, pca_df, scaler, data_scaled, data_clean.columns.tolist()
 
 def analyze_pca_results(pca, feature_names, principal_df):
-    """Analyze and display PCA results"""
-    print("\n--- PCA Results Analysis ---")
+    print("\nPCA Results Analysis")
     
     explained_variance = pca.explained_variance_ratio_
     cumulative_variance = np.cumsum(explained_variance)
