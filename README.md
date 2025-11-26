@@ -1,150 +1,124 @@
-# LA Airbnb Data Analysis
+# LA Airbnb Data Analysis Project
 
-Comprehensive analysis of Los Angeles Airbnb listings using Principal Component Analysis (PCA).
+A comprehensive analysis of Los Angeles Airbnb listings examining neighborhood price effects, amenity premiums, and host behavior patterns.
+
+## Research Questions
+
+1. **Neighborhood Effects**: Are certain neighborhoods systematically higher-priced after controlling for property characteristics?
+2. **Amenity Premiums**: Do amenities like pools and parking add significant price premiums?
+3. **Host Behavior**: Are multi-listing hosts clustering in high-tourism areas and pricing more aggressively?
 
 ## Project Structure
 
-- `main.py` - Main execution pipeline
-- `config.py` - Configuration constants and paths
-- `data_loader.py` - Data loading and exploration
-- `data_cleaner.py` - Data cleaning and missing value handling
-- `feature_engineer.py` - Feature engineering and selection
-- `pca_analyzer.py` - PCA analysis and component selection
-- `visualizations.py` - Comprehensive visualization suite
-- `run_visualizations.py` - Run all visualizations
+```
+Intro-to-DS---Predictive-Minds/
+├── config/                          # Configuration files
+│   └── config.py
+├── src/                             # Reusable modules
+│   ├── data_loader.py
+│   ├── data_cleaner.py
+│   ├── feature_engineer.py
+│   ├── pca_analyzer.py
+│   ├── debug_utils.py
+│   └── utils.py
+├── price_analysis_pipeline/         # Main analysis pipelines
+│   ├── 1_neighborhood_analysis.py
+│   ├── 2_amenity_premium_analysis.py
+│   ├── 3_host_behavior_analysis.py
+│   ├── 4_integrated_model.py
+│   └── main_price_analysis.py
+├── data_cleaning_pipeline.py        # Data preprocessing pipeline
+├── pca_analysis_pipeline.py         # PCA dimensionality reduction
+├── main.py                          # Legacy main file
+└── Dataset Processed/               # Cleaned datasets (local)
+```
+
+## Quick Start
+
+### Prerequisites
+```bash
+pip install -r requirements.txt
+```
+
+### Run Complete Analysis Pipeline
+```bash
+cd price_analysis_pipeline
+python main_price_analysis.py
+```
+
+### Run Individual Analyses
+```bash
+# 1. Neighborhood price effects
+python 1_neighborhood_analysis.py
+
+# 2. Amenity price premiums  
+python 2_amenity_premium_analysis.py
+
+# 3. Multi-listing host behavior
+python 3_host_behavior_analysis.py
+
+# 4. Integrated price model
+python 4_integrated_model.py
+```
 
 ## Key Findings
 
-- **29 Principal Components** explain **95.44%** of variance
-- **PC1 (13.74%)**: Review Quality (all review scores)
-- **PC2 (9.98%)**: Property Size (accommodates, bedrooms, bathrooms)
-- **PC3 (8.07%)**: Availability (30/60/90 day availability)
-- **PC4 (5.39%)**: Popularity (reviews per month, superhost status)
+### Neighborhood Price Premiums
+- **Venice**: +78.9% premium
+- **Santa Monica**: +73.9% premium
+- **West Hollywood**: +69.5% premium
+- Location explains most price variation
 
-## Usage
+### Amenity Value-Add
+- **Pool**: +23.1% premium
+- **Gym**: +15.2% premium  
+- **Breakfast**: +14.5% premium
+- Basic amenities (wifi, kitchen) show no premium
 
-1. Run the full pipeline:
-   python main.py
-2. Generate visualizations:
-   python run_visualizations.py
+### Host Behavior Patterns
+- Professional hosts charge **-10.5% less** after controls
+- Cluster in non-premium, high-density areas
+- Optimize for occupancy over price premiums
 
-## Guide
+### Model Performance
+- **R² = 0.554** - Explains 55.4% of price variation
+- Top features: bedrooms, bathrooms, accommodation capacity
 
-🏆 PC1 - "Review Quality" (13.74%)
-What it represents: How well-reviewed a property is
+## Pipeline Details
 
-High positive loadings: All review scores (rating, accuracy, value, communication)
+### Data Cleaning Pipeline
+```bash
+python data_cleaning_pipeline.py
+```
+- Loads raw Airbnb data
+- Cleans price columns and dates
+- Handles missing values with tiered strategy
+- Engineers features (host experience, amenities count)
 
-Interpretation: Properties with high PC1 scores have excellent reviews across all categories
+### PCA Analysis Pipeline  
+```bash
+python pca_analysis_pipeline.py
+```
+- Performs dimensionality reduction
+- Identifies 29 principal components explaining 95.47% variance
+- Reveals latent patterns in listing characteristics
 
-🏠 PC2 - "Property Size" (9.98%)
-What it represents: Physical capacity of the property
+### Modular Analysis
+Each analysis script can run independently using the pre-processed data in `Dataset Processed/`.
 
-Positive: accommodates, bedrooms, bathrooms, beds
+## Outputs
 
-Negative: Private rooms (smaller properties)
+- **Statistical models** with coefficient interpretations
+- **Visualizations** in `price_analysis_pipeline/results/` folder
+- **Processed datasets** with engineered features
 
-Interpretation: High PC2 = large properties that can host more guests
+## Technical Notes
 
-📅 PC3 - "Availability" (8.07%)
-What it represents: How available the property is
+- Built with Python, pandas, scikit-learn, statsmodels
+- Robust statistical controls for property characteristics
+- Handles 45,421 LA Airbnb listings
+- Modular, reproducible analysis pipelines
 
-Positive: Availability across 30, 60, 90 days
+---
 
-Negative: Entire homes/apartments (they book faster)
-
-Interpretation: High PC3 = properties that are frequently available
-
-⭐ PC4 - "Popularity & Host Quality" (5.39%)
-What it represents: How popular and well-managed the listing is
-
-Positive: reviews_per_month, number_of_reviews, superhost status
-
-Interpretation: High PC4 = frequently reviewed properties with reputable hosts
-
-🎯 PC5-10 (26.85% variance) - "Neighborhood & Property Type Effects"
-PC5 (4.54%) - "Location vs Property Type"
-
-High: neighborhood_Other, room_type_Private room
-
-Low: neighborhood_Hollywood, room_type_Entire home/apt
-
-Meaning: Distinguishes private rooms in less popular areas vs entire homes in Hollywood
-
-PC6 (3.71%) - "Host Experience vs Property Type"
-
-High: room_type_Entire home/apt, host_experience_years
-
-Low: room_type_Private room
-
-Meaning: Experienced hosts tend to offer entire homes
-
-PC7 (3.27%) - "Instant Booking Dynamics"
-
-High: host_experience_years
-
-Low: instant_bookable
-
-Meaning: Experienced hosts are less likely to use instant booking
-
-PC8 (3.03%) - "Hotel vs Long-term Stays"
-
-High: room_type_Hotel room, maximum_nights
-
-Meaning: Hotel rooms allow longer maximum stays
-
-PC9 (2.67%) - "Host Verification Patterns"
-
-High: host_identity_verified, neighborhood_Santa Monica
-
-Meaning: Santa Monica has more verified hosts
-
-PC10 (2.62%) - "Hollywood Shared Rooms"
-
-High: neighborhood_Hollywood, room_type_Shared room
-
-Meaning: Hollywood has more shared room listings
-
-🗺️ PC11-19 (27.53% variance) - "Neighborhood Micro-Patterns"
-
-These components capture very specific geographic patterns:
-
-PC11: Long Beach vs Downtown vs Venice dynamics
-
-PC12: Downtown vs Pasadena contrast
-
-PC13: Beverly Hills vs Alhambra differences
-
-PC14: Santa Monica dominance
-
-PC15: Hollywood Hills uniqueness
-
-PC16: Pasadena-Santa Monica relationship
-
-PC17: Alhambra-West Hollywood opposition
-
-PC18: Shared rooms in specific areas
-
-PC19: More geographic fine-tuning
-
-⚙️ PC20-29 (21.88% variance) - "Technical & Minor Effects"
-
-PC20 (2.21%): Host verification + stay duration patterns
-
-PC21 (2.12%): Instant booking + price relationships
-
-PC22 (2.05%): Minimum nights + superhost correlation
-
-PC23 (1.99%): Maximum vs minimum nights dynamics
-
-PC24 (1.78%): Pure price effects
-
-PC25 (1.60%): Host experience patterns
-
-PC26 (1.41%): Amenities vs superhost tradeoff
-
-PC27 (1.17%): Long-term availability (365 days)
-
-PC28 (0.95%): Location rating specificity
-
-PC29 (0.90%): Check-in vs cleanliness rating balance
+*Project demonstrating systematic pricing patterns in the LA Airbnb market through rigorous statistical analysis.*
